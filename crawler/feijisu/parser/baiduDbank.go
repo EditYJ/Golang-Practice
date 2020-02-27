@@ -3,7 +3,6 @@ package parser
 import (
 	"demo/crawler/engine"
 	"demo/crawler/model"
-	"demo/crawler/util"
 	"regexp"
 )
 
@@ -17,9 +16,9 @@ func BaiduDbank(contents []byte, extraParam map[string]string) engine.ParseResul
 	// 得到视频id
 	dbank.VideoId = extraParam["id"]
 	// 得到百度网盘分享密码
-	dbank.SharePwd = util.FilterString(contents, sharePasswordRe)
+	dbank.SharePwd = filterString(contents, sharePasswordRe)
 	// 得到百度网盘分享地址
-	dbank.ShareUrl = util.FilterString(contents, shareUrlRe)
+	dbank.ShareUrl = filterString(contents, shareUrlRe)
 
 	result.Items = []interface{}{dbank}
 	return result
