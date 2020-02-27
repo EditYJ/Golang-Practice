@@ -34,7 +34,7 @@ func (se SimpleEngine) Run(seeds ...Request) {
 
 func worker(r Request) (ParseResult, error) {
 
-	log.Printf("正在爬取 %s ...", r.Url)
+	//log.Printf("正在爬取 %s ...", r.Url)
 
 	// 得到源网页源码
 	fetchRes, err := fetcher.Fetch(r.Url)

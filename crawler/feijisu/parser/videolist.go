@@ -10,7 +10,7 @@ const BaseUrl = "http://www.feijisu5.com"
 
 var (
 	VideoListRe = regexp.MustCompile(`<a class="js-tongjic" href="(.*/[a-z]+/[0-9]+/)" title="(.*)" target="_blank">`)
-	NextListRe  = regexp.MustCompile(`class="pages[\s\S]+?href="(.*?)" class="a1"`)
+	NextListRe  = regexp.MustCompile(`class="pages[\s\S]+href="(.*?)" class="a1">下一页</a> `)
 )
 
 func ParseVideoList(contents []byte) engine.ParseResult {
