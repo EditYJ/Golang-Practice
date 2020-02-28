@@ -9,10 +9,14 @@ import (
 
 func main() {
 	//simpleEngine := engine.SimpleEngine{}
+	itemChan, err := datasave.ItemSaver()
+	if err != nil {
+		panic(err)
+	}
 	concurrentEngine := engine.ConcurrentEngine{
 		Scheduler:   &scheduler.SimpleScheduler{},
 		WorkerCount: 100,
-		ItemChan:    datasave.ItemSaver(),
+		ItemChan:    itemChan,
 	}
 
 	concurrentEngine.Run(engine.Request{
