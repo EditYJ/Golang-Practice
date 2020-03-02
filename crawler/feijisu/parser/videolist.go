@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"demo/crawler/engine"
 	"regexp"
+	"strings"
 )
 
 const BaseUrl = "http://www.feijisu5.com"
@@ -11,6 +12,8 @@ const BaseUrl = "http://www.feijisu5.com"
 var (
 	VideoListRe = regexp.MustCompile(`<a class="js-tongjic" href="(.*/[a-z]+/[0-9]+/)" title="(.*)" target="_blank">`)
 	NextListRe  = regexp.MustCompile(`class="pages[\s\S]+href="(.*?)" class="a1">下一页</a> `)
+
+	IdRe = regexp.MustCompile(`.+/([0-9]+?)/`)
 )
 
 func ParseVideoList(contents []byte) engine.ParseResult {
@@ -19,10 +22,22 @@ func ParseVideoList(contents []byte) engine.ParseResult {
 
 	result := engine.ParseResult{}
 	for _, item := range VideoListRes {
+		// 是否是主站的视频
+		isMainWeb := strings.HasPrefix(completeUrl(item[1]), BaseUrl)
+		id := filterString(item[1], IdRe)
+		var pageType = "0"
+		if isMainWeb {
+			pageType = "0"
+		} else {
+			pageType = "1"
+		}
+
 		result.Items = append(result.Items, string(item[2]))
 		result.Requests = append(result.Requests, engine.Request{
-			Url:        completeUrl(item[1]),
-			ParserFunc: ParseVideoInfo,
+			Url: completeUrl(item[1]),
+			ParserFunc: func(c []byte) engine.ParseResult {
+				return ParseVideoInfo(c, map[string]string{"id": id, "pageType": pageType})
+			},
 		})
 	}
 

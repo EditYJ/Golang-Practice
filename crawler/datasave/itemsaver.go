@@ -8,10 +8,10 @@ import (
 )
 
 func ItemSaver() (chan interface{}, error) {
-	client, err := elastic.NewClient(elastic.SetSniff(false))
-	if err != nil {
-		return nil, err
-	}
+	//client, err := elastic.NewClient(elastic.SetSniff(false))
+	//if err != nil {
+	//	return nil, err
+	//}
 	out := make(chan interface{})
 	count := 0
 	go func() {
@@ -22,10 +22,10 @@ func ItemSaver() (chan interface{}, error) {
 				count++
 			}
 			// 存储
-			err := save(item, client)
-			if err != nil {
-				log.Printf("Item server error saving item #%v: %v", item, err)
-			}
+			//err := save(item, client)
+			//if err != nil {
+			//	log.Printf("Item server error saving item #%v: %v", item, err)
+			//}
 		}
 	}()
 	return out, nil
